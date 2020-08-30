@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+
+<h:body>
+    <h:form>
+        <p:breadCrumb>
+            <p:menuitem/>
+            <p:menuitem value="Inicio" url="sistem.xhtml"/>
+            <p:menuitem value="Logout" action="#{loginManageBean.logout}"/>
+        </p:breadCrumb>
+    </h:form>
+    <br/>
+    <br/>
+    <h:form id="formCadastro">
+        <p:messages showDetail="true"/>
+        <p:panelGrid columns="2">
+            <p:outputLabel>Nome</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.name}" pt:placeholder="Seu Nome"
+                         required="true" requiredMessage="Nome não pode ser vázio!"/>
+
+            <p:outputLabel>Sobrenome</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.lastName}" pt:placeholder="Seu SobreNome"/>
+
+            <p:outputLabel>Login</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.login}" pt:placeholder="Seu Login"/>
+
+            <p:outputLabel>email</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.email}" pt:placeholder="Seu Email"/>
+
+            <p:outputLabel>senha</p:outputLabel>
+            <p:password value="#{userSistemManageBean.userSistem.passwordUser}" pt:placeholder="Digite Uma Senha"/>
+
+            <p:outputLabel>CEP:</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.cep}" pt:placeholder="Digite seu cep" id="cepuser">
+                <f:ajax event="blur" execute="@this" render="localidade bairro uf"
+                        listener="#{userSistemManageBean.searchZipCode}"/>
+            </p:inputText>
+
+            <p:outputLabel>Localidade:</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.localidade}" id="localidade"/>
+
+            <p:outputLabel>Bairro:</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.bairro}" id="bairro"/>
+
+            <p:outputLabel>UF:</p:outputLabel>
+            <p:inputText value="#{userSistemManageBean.userSistem.uf}" id="uf"/>
+
+        </p:panelGrid>
+        <br/>
+        <br/>
+        <p:commandButton value="salvar" ajax="false" action="#{userSistemManageBean.salvar}"></p:commandButton>
+        <p:commandButton value="Novo" action="#{userSistemManageBean.newRegister}" immediate="true">
+            <f:ajax execute="@this" render="@form"/>
+        </p:commandButton>
+        <br/>
+        <br/>
+    </h:form>
+    <h:form>
+        <p:panel header="Consultar Usuário">
+            <h:panelGrid columns="3">
+                <h:outputLabel value="Nome"/>
+                <p:inputText value="#{userSistemManageBean.searchfild}"/>
+                <p:commandButton value="Buscar" actionListener="#{userSistemManageBean.search}" update="formTable"/>
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+
+    <h:form id="formTable">
+        <p:dataTable value="#{userSistemManageBean.userSistemList}" var="usuario">
+            <p:column headerText="ID">
+                <h:outputText value="#{usuario.id}"/>
+            </p:column>
+            <p:column headerText="NOME">
+                <h:outputText value="#{usuario.name}"/>
+            </p:column>
+            <p:column headerText="SOBRENOME">
+                <h:outputText value="#{usuario.lastName}"/>
+            </p:column>
+            <p:column headerText="EMAIL">
+                <h:outputText value="#{usuario.email}"/>
+            </p:column>
+
+            <p:column headerText="LOCALIDADE">
+                <h:outputText value="#{usuario.localidade}"/>
+            </p:column>
+            <p:column headerText="UF">
+                <h:outputText value="#{usuario.uf}"/>
+            </p:column>
+            <p:column headerText="EDITAR">
+                <h:commandLink>
+                    <f:setPropertyActionListener id="btEditar" value="#{usuario}"
+                                                 target="#{userSistemManageBean.userSistem}"/>
+                    <f:ajax execute="btEditar" render="formCadastro"/>
+                    <h:graphicImage url="../resources/img/editar.png" width="20" height="20"/>
+                </h:commandLink>
+            </p:column>
+            <p:column headerText="REMOVER">
+                <h:commandLink id="btRemover" action="#{userSistemManageBean.deletar}">
+                    <f:setPropertyActionListener value="#{usuario}"
+                                                 target="#{userSistemManageBean.userSistem}"/>
+                    <f:ajax execute="btEditar" render="@form"/>
+                    <h:graphicImage url="../resources/img/delete.png" width="20" height="20"/>
+                </h:commandLink>
+            </p:column>
+            <p:column headerText="FONE">
+                <h:commandLink immediate="true" action="phone.xhtml" id="botaFone">
+                    <h:graphicImage url="../resources/img/telefone.png" width="20" height="20"/>
+                    <f:param name="idUser" value="#{usuario.id}"/>
+                </h:commandLink>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>

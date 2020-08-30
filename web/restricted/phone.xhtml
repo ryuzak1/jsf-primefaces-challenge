@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+
+<h:head></h:head>
+<h:body>
+    <h:form>
+        <p:breadCrumb>
+            <p:menuitem/>
+            <p:menuitem value="Inicio" url="sistem.xhtml"/>
+        </p:breadCrumb>
+    </h:form>
+    <br/>
+    <br/>
+    <h:form id="formCadastroFone">
+        <h:panelGrid columns="2">
+
+            <p:outputLabel>Usuário: </p:outputLabel>
+            <p:outputLabel value="#{phoneManageBean.userSistem.name}"/>
+
+            <p:outputLabel>Número</p:outputLabel>
+            <p:inputText value="#{phoneManageBean.phoneUser.numberFone}" required="true"
+                         requiredMessage="Digite um número"/>
+            <p:outputLabel>DD</p:outputLabel>
+            <p:inputText value="#{phoneManageBean.phoneUser.dd}" required="true"
+                         requiredMessage="Digite um número"/>
+
+            <p:outputLabel>Tipo</p:outputLabel>
+            <p:selectOneMenu value="#{phoneManageBean.phoneUser.typeNumber}">
+                <f:selectItem itemValue="Pessoal" itemLabel="Pessoal"/>
+                <f:selectItem itemValue="Comercial" itemLabel="Comercial"/>
+            </p:selectOneMenu>
+
+        </h:panelGrid>
+        <br/>
+
+        <p:commandButton value="Salvar" action="#{phoneManageBean.salvarFone}" ajax="false"></p:commandButton>
+
+        <p:messages showDetail="true" showSummary="false" id="msg"/>
+    </h:form>
+    <br/>
+    <br/>
+    <h:form id="forFone">
+        <p:dataTable value="#{phoneManageBean.userSistem.phoneUserList}" var="fone" cellpadding="10" border="1">
+            <f:facet name="header">LISTA DE TELEFONES DE #{phoneManageBean.userSistem.name}</f:facet>
+            <p:column>
+                <f:facet name="header">ID</f:facet>
+                <h:outputText value="#{fone.id}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">NÚMERO</f:facet>
+                <h:outputText value="#{fone.numberFone}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">TIPO</f:facet>
+                <h:outputText value="#{fone.typeNumber}"/>
+            </p:column>
+            <p:column>
+                <f:facet name="header">EXCLUIR</f:facet>
+                <h:commandLink immediate="true" action="#{phoneManageBean.removePhone}" id="botaDeletar">
+                    <h:graphicImage url="/resources/img/delete.png" width="20" height="20"/>
+                    <f:setPropertyActionListener value="#{fone}" target="#{phoneManageBean.phoneUser}"/>
+                    <f:ajax execute="botaDeletar" render="@form :formCadastroFone:msg"/>
+                </h:commandLink>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+
+</h:body>
+</html>
