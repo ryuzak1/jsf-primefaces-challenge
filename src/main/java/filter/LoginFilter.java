@@ -25,7 +25,7 @@ public class LoginFilter implements Filter {
         String url = req.getRequestURL().toString();
         System.out.println(url);
         if (url.contains("/restricted")&&AuxBean.getInstance().isLogado()==false){
-            res.sendRedirect(req.getServletContext().getContextPath()+"/layout.xhtml");
+            res.sendRedirect(req.getServletContext().getContextPath()+"/index.xhtml");
         }else {
             filterChain.doFilter(servletRequest,servletResponse);
         }
