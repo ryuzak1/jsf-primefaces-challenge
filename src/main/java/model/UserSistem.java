@@ -15,7 +15,9 @@ public class UserSistem {
     private Long id;
     private String name;
     private String lastName;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String login;
     private String passwordUser;
     private String cep;

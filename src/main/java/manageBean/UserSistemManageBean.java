@@ -55,13 +55,24 @@ public class UserSistemManageBean {
         this.searchfild = searchfild;
     }
 
-    public String salvar() {
-        daoGerenic.saveGeneric(userSistem);
-        userSistemList.add(userSistem);
-        userSistem = new UserSistem();
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação:", "Salvo com Sucesso!"));
-        return "";
+    public String saveUser() {
+        try{
+            daoGerenic.saveGeneric(userSistem);
+            userSistemList.add(userSistem);
+            userSistem = new UserSistem();
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação:", "Salvo com Sucesso!"));
+            return "";
+
+        }catch (Exception e){
+            userSistem = new UserSistem();
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Informação:", "Erro ao Salvar!"));
+            return "";
+
+        }
+
+
     }
 
     public void search(){
